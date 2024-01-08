@@ -55,3 +55,137 @@ echo "main" | DEBUG=yes git flow init -f &>/dev/null
 ```
 
 **Note:** read how to install **[Git-Flow](docs/02-tools/git.md#git-flow)**.
+
+## Serve Application
+
+This application is developed to be agnostic to the environment running on. For development there are three different ways to create a running environment:
+
+1. [**PHP** built in web server](#php-builtin-server)
+2. [**Apache2** web server with **PHP** module](#apache2-with-php)
+3. [**Docker** and **Docker Compose** environment](#docker-and-docker-compose)
+
+### Configuration
+
+Before the application can be served it should be configured:
+
+1. `.env`: The environment configuration, is based on `.env.dist`.
+
+    **Note:** use the `./env.sh` helper script.
+
+2. `app/.config/config.php`: The environment configuration, is based on `app/.config/config.dist.php`.
+
+    **Note:** use the `./config.sh` helper script.
+
+**Note:** the environment has default parameters, and it can be started without any configuration.
+
+### PHP
+
+For development purpose the easiest way to serve the website is to use the PHP integrated web server:
+
+```shell
+php -S 127.0.0.1:8000 -t public
+```
+
+Alternative, run the development server in the background and write the output to a log file:
+
+```shell
+nohup php -S 127.0.0.1:8000 -t public > phpd.log 2>&1 &
+```
+
+Show the last 100 rows and follow the log file:
+
+```shell
+tail -fn 100 phpd.log
+```
+
+Enter the application:
+
+* The **basic** web page: [http://localhost:8000](http://localhost:8000)
+* The **Adminer**: [http://localhost:8000/adminer.php](http://localhost:8000/adminer.php)
+
+### Apache2 with PHP
+
+Drafts for the configuration:
+
+* `conf/apache2/000-default.conf`: The **Apache2** default configuration for **HTTP**
+* `conf/apache2/000-default-ssl.conf`: The **Apache2** default configuration for **HTTPS**
+
+For further details howto install and configure the Apache2 web server correct is described inside [`doc/apache2.md`](doc/apache2.md).
+
+Enter the application:
+
+* The **basic** web page: [http://localhost/](http://localhost/)
+* The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
+
+### Docker and Docker Compose
+
+Build and start the small and simple environment:
+
+```shell
+docker-compose up -d
+```
+
+Access the application:
+
+* The **basic** web page: [http://localhost/](http://localhost/)
+* The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
+
+Build and start the development environment with all containers incl. **Adminer** and **PHPMyAdmin**:
+
+```shell
+docker-compose -p basic -f docker-compose.yml -f docker-compose.dev.yml up -d --build --force-recreate
+```
+
+Check if all containers are running correctly:
+
+```shell
+docker-compose -p basic ps
+```
+
+Access the application:
+
+* The **basic** web page: [http://localhost:8080](http://localhost:8080)
+* The **Adminer**:
+  * Internal: [http://localhost:8080/adminer.php](http://localhost:8080/adminer.php)
+  * Dedicated app: [http://localhost:8081](http://localhost:8081)
+* The **PHPMyAdmin**: [http://localhost:8082](http://localhost:8082)
+
+## Development
+
+The development of this application is based on following tools:
+
+* **[PHP](https://www.php.net/)** is the main programing language
+* **[Composer](https://getcomposer.org/)** is used as the main dependency manager for **PHP**
+* **[PHP Coding Standards Fixer (PHP CS Fixer)](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer)** is a tool to automatically fix PHP coding standards issues
+* **[PHPStan](https://phpstan.org/)** is a static code analysis tool for **PHP**
+* **[PHPUnit](https://phpunit.de/)** is a programmer-oriented testing framework for **PHP**
+
+### PHP Coding Standards Fixer (PHP CS Fixer)
+
+**[PHP Coding Standards Fixer (PHP CS Fixer)](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer)** is a tool to automatically fix PHP coding standards issues. It is a standalone CLI tool that you can use on your projects regardless of the framework you use.
+
+```shell
+vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --using-cache=no --allow-risky=yes src
+```
+
+## PHPStan
+
+**[PHPStan](https://phpstan.org/)** is a static code analysis tool for **PHP**.
+
+```shell
+vendor/bin/phpstan analyse src tests --level=max
+```
+
+## PHPUnit
+
+**[PHPUnit](https://phpunit.de/)** is a programmer-oriented testing framework for **PHP**.
+
+```shell
+vendor/bin/phpunit --configuration phpunit.xml.dist
+```
+
+## Concepts and Inspiration
+
+Not everything is invented here, so here are some links to other projects tah inspired this project and implementation:
+
+* A very lightweight template engine with PHP: https://codeshack.io/lightweight-template-engine-php/
