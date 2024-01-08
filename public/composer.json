@@ -1,0 +1,47 @@
+{
+    "name": "bassix/basic",
+    "description": "A very basic and simple project for a default web page on an empty web server with php enabled",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Ibrom",
+            "email": "adam@net-i.de"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor/"
+    },
+    "optimize-autoloader": true,
+    "classmap-authoritative": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.4|>=8.0|>=8.1",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*",
+        "psr/log": "^1",
+        "monolog/monolog": "2.x-dev",
+        "pimple/pimple": "dev-main"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "^9",
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "phpstan/phpstan": "2.0.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "BasicApp\\": "src/"
+        },
+        "files": ["src/helpers.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BasicApp\\Tests\\": "tests/"
+        }
+    }
+}
