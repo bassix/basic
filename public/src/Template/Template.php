@@ -81,9 +81,6 @@ class Template
     $this->logger->info('The cache cleared successful');
   }
 
-  /**
-   * @throws FileNotFoundException
-   */
   public function render(string $file, array $data = []): string
   {
     $this->logger->info("Starting to render template file \"$file\"");
@@ -116,10 +113,7 @@ class Template
     $this->logger->info('Output of rendered contend done!');
   }
 
-  /**
-   * @param string $code
-   */
-  public function compileComments($code): string
+  public function compileComments(string $code): string
   {
     return preg_replace('~\{#\s*(.+?)\s*\#}~is', '', $code);
   }
@@ -156,7 +150,7 @@ class Template
       $massage = "The given template file \"$templateFilePath\" not found!";
       $this->logger->critical($massage);
 
-      throw new FileNotFoundException($massage);
+      return file_get_contents($this->templateDir . '/' . '404.html.tpl');
     }
 
     $code = file_get_contents($this->templateDir . '/' . $file);

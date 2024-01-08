@@ -11,7 +11,7 @@ final class NotFoundController extends AbstractController
   public function __invoke(): Response
   {
     return new Response(
-      $this->container['template']->render('page/404.html.tpl'),
+      $this->template->render('404.html.tpl'),
       StatusCode::HTTP_NOT_FOUND
     );
   }
