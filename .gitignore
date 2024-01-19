@@ -21,12 +21,8 @@ composer.phar
 /public/vendor/*
 !/public/vendor/.htaccess
 
-## php-cs-fixer
-php-cs-fixer
-.php_cs
-.php_cs.cache
-.php-cs-fixer.php
-.php-cs-fixer.cache
+## PHP tools
+.*.cache
 
 ## Database Admin
 adminer.php

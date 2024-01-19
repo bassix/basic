@@ -12,24 +12,22 @@
     "config": {
         "vendor-dir": "vendor/"
     },
-    "optimize-autoloader": true,
-    "classmap-authoritative": true,
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.4|>=8.0|>=8.1",
+        "php": ">=8.2",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-sqlite3": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
-        "psr/log": "^1",
-        "monolog/monolog": "2.x-dev",
-        "pimple/pimple": "dev-main"
+        "psr/log": "3.*.*",
+        "monolog/monolog": "3.5.*",
+        "pimple/pimple": "v3.5.*"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "phpunit/phpunit": "^9",
+        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "10.5.x-dev",
         "friendsofphp/php-cs-fixer": "dev-master",
         "phpstan/phpstan": "2.0.x-dev"
     },

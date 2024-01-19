@@ -5,5 +5,5 @@
 . bin/_colors.sh
 
 cd public
-composer "$@" --optimize-autoloader --classmap-authoritative
+composer --no-progress --optimize-autoloader ----classmap-authoritative --prefer-dist --ignore-platform-reqs --verbose "$@"
 cd ..
