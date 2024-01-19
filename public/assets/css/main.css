@@ -1,0 +1,203 @@
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-ExtraLight.woff2) format("woff2");
+    font-weight: 200
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-Light.woff2) format("woff2");
+    font-weight: 300
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-Regular.woff2) format("woff2");
+    font-weight: 400
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-Medium.woff2) format("woff2");
+    font-weight: 500
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-SemiBold.woff2) format("woff2");
+    font-weight: 600
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-Bold.woff2) format("woff2");
+    font-weight: 700
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/font/Manrope-ExtraBold.woff2) format("woff2");
+    font-weight: 800
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    font-family: "Manrope", sans-serif;
+    text-shadow: 2px 2px 3px rgb(0, 0, 0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+    background-size: 1800% 1800%;
+    -webkit-animation: rainbow 18s ease infinite;
+    -z-animation: rainbow 18s ease infinite;
+    -o-animation: rainbow 18s ease infinite;
+    animation: rainbow 18s ease infinite;
+}
+
+@-webkit-keyframes rainbow {
+    0% {
+        background-position: 0% 82%
+    }
+    50% {
+        background-position: 100% 19%
+    }
+    100% {
+        background-position: 0% 82%
+    }
+}
+
+@-moz-keyframes rainbow {
+    0% {
+        background-position: 0% 82%
+    }
+    50% {
+        background-position: 100% 19%
+    }
+    100% {
+        background-position: 0% 82%
+    }
+}
+
+@-o-keyframes rainbow {
+    0% {
+        background-position: 0% 82%
+    }
+    50% {
+        background-position: 100% 19%
+    }
+    100% {
+        background-position: 0% 82%
+    }
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 82%
+    }
+    50% {
+        background-position: 100% 19%
+    }
+    100% {
+        background-position: 0% 82%
+    }
+}
+
+.container {
+    width: 360pt;
+    padding: 8% 0 0;
+    margin: auto;
+}
+
+.box {
+    position: relative;
+    z-index: 1;
+    /*max-width: 360px;*/
+    margin: 0 auto 100px;
+    padding: 10pt;
+    text-align: center;
+    color: #d9d2ca;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 5pt;
+    background-color: #2f3b4b;
+    background-image: linear-gradient(to bottom right, rgba(87, 87, 87, 1), rgba(26, 26, 26, 1));
+    box-shadow: 0 0 10pt 0 rgba(0, 0, 0, 0.45), 0 20pt 20pt 0 rgba(0, 0, 0, 0.35);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1.5rem;
+    font-size: 24pt;
+}
+
+h2 {
+    font-size: 21pt;
+}
+
+h3 {
+    font-size: 18pt;
+}
+
+form input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    margin: 0 0 15px;
+    padding: 15px;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 3pt 0 rgba(0, 0, 0, 0.45), 0 5pt 5pt 0 rgba(0, 0, 0, 0.35);
+}
+
+form button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #4CAF50;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 3pt 0 rgba(0, 0, 0, 0.45), 0 5pt 5pt 0 rgba(0, 0, 0, 0.35);
+}
+
+form button:hover, form button:active, form button:focus {
+    background: #43A047;
+}
+
+form .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+form .message a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.container.notfound {
+    width: 544pt;
+}
+
+.box.notfound {
+    width: 477pt;
+}
+
+.notfound_letter {
+    font-size: 80pt;
+    line-height: 80pt;
+}
