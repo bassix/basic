@@ -12,14 +12,14 @@ use Psr\Log\NullLogger;
 
 final class BasicAppTest extends TestCase
 {
-    public function testCanBeInstantiated(): void
-    {
-        $basicApp = new BasicApp(__DIR__, null, new NullLogger());
+  public function testCanBeInstantiated(): void
+  {
+    $basicApp = new BasicApp(__DIR__, null, new NullLogger());
 
-        $this->assertInstanceOf(BasicApp::class, $basicApp);
-        $this->assertEquals(__DIR__, $basicApp->root());
-        $this->assertInstanceOf(Host::class, $basicApp->host());
-        $this->assertInstanceOf(Request::class, $basicApp->request());
-        $this->assertInstanceOf(Database::class, $basicApp->database());
-    }
+    $this->assertInstanceOf(BasicApp::class, $basicApp);
+    $this->assertEquals(__DIR__, $basicApp->root());
+    $this->assertInstanceOf(Host::class, $basicApp->host());
+    $this->assertInstanceOf(Request::class, $basicApp->request());
+    $this->assertInstanceOf(Database::class, $basicApp->database());
+  }
 }

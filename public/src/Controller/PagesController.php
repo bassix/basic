@@ -23,7 +23,7 @@ final class PagesController extends AbstractController
     } catch (FileNotFoundException $e) {
       $this->logger->error($e->getMessage());
 
-      return new Response('Page not found!',StatusCode::HTTP_NOT_FOUND);
+      return new Response('Page not found!', StatusCode::HTTP_NOT_FOUND);
     }
   }
 }

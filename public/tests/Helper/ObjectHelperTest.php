@@ -9,16 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class ObjectHelperTest extends TestCase
 {
-    public function testObjectHelper()
-    {
-        $class = new \stdClass();
-        $class->book_title = 'Test!';
-        $class->date_time = '2022-06-30 18:59:59';
+  public function testObjectHelper(): void
+  {
+    $class = new \stdClass();
+    $class->book_title = 'Test!';
+    $class->date_time = '2022-06-30 18:59:59';
 
-        /** @var BookModel $book */
-        $book = ObjectHelper::cast($class, BookModel::class);
+    /** @var BookModel $book */
+    $book = ObjectHelper::cast($class, BookModel::class);
 
-        $this->assertEquals($class->book_title, $book->getBookTitle());
-        $this->assertEquals($class->date_time, $book->getDateTime()->format('Y-m-d H:i:s'));
-    }
+    $this->assertEquals($class->book_title, $book->getBookTitle());
+    $this->assertEquals($class->date_time, $book->getDateTime()->format('Y-m-d H:i:s'));
+  }
 }
