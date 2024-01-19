@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseTest extends TestCase
 {
-    public function testInstantiation(): void
-    {
-        $database = new Database(new SqliteDsn(':memory:'));
-        $this->assertInstanceOf(Database::class, $database);
-    }
+  public function testInstantiation(): void
+  {
+    $database = new Database(new SqliteDsn(':memory:'));
+    $this->assertInstanceOf(Database::class, $database);
+  }
 }

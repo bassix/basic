@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace BasicApp\Database;
 
+use Exception;
+
 class Query
 {
   public const ORDER_ASC = 'ASC';
@@ -34,7 +36,7 @@ class Query
 
   public function __toString(): string
   {
-    return (string)$this->generateSQL();
+    return $this->generateSQL();
   }
 
   /**
@@ -58,7 +60,7 @@ class Query
   }
 
   /**
-   * SELECTs rows from a table
+   * SELECT rows from a table
    */
   public function select($fieldList = '*'): self
   {
@@ -73,7 +75,7 @@ class Query
   }
 
   /**
-   * DELETEs rows from a table
+   * DELETE rows from a table
    */
   public function delete(array $fieldList = []): self
   {
@@ -84,7 +86,7 @@ class Query
   }
 
   /**
-   * COUNTs the rows in a table stored the given field name in the result that holds the row count.
+   * COUNT the rows in a table stored the given field name in the result that holds the row count.
    */
   public function countRows(string $countFieldName = '_count'): self
   {
@@ -191,13 +193,9 @@ class Query
   }
 
   /**
-   * LIMITs the number of returned rows
-   *
-   * @param string|int $start
-   * @param string|int $offset
-   * @return $this
+   * LIMIT the number of returned rows
    */
-  public function limit($start, $offset): self
+  public function limit(string|int $start, string|int $offset): self
   {
     $this->limits = [$start, $offset];
 
@@ -244,18 +242,18 @@ class Query
    */
   protected function sanitizeValue($value): string
   {
+    if (null === $value) {
+      return 'NULL';
+    } elseif (empty($value)) {
+      return '\'\'';
+    } elseif (is_int($value) || is_float($value)) {
+      return (string)$value;
+    }
+
     $value = $this->normalizeValue($value);
 
     if (in_array(strtoupper($value), $this->reservedWords)) {
       return $value;
-    }
-
-    if ('' === $value) {
-      return '\'\'';
-    } elseif (is_int($value) || is_float($value)) {
-      return (string)$value;
-    } elseif (null === $value) {
-      return 'NULL';
     }
 
     if (is_callable($this->getEscapeFunction())) {
@@ -387,14 +385,14 @@ class Query
    */
   protected function escapeField($value): string
   {
-    if (false !== strpos($value, '.')) {
-      if (false !== strpos($value, '*')) {
+    if (str_contains($value, '.')) {
+      if (str_contains($value, '*')) {
         $value = '`' . str_replace('.', '`.', $value);
       } else {
         $value = '`' . str_replace('.', '`.`', $value) . '`';
       }
     } else {
-      if (false === strpos($value, '*')) {
+      if (!str_contains($value, '*')) {
         $value = '`' . $value . '`';
       }
     }
@@ -428,63 +426,59 @@ class Query
    * keysAreLikelyTableRef: If this is set, the conditionParse will assume, that values matching FOO.BAR represent a table reference and thus need to be escaped as field names. This option is used e.g. when solving ON-Conditions in joins.
    *
    * This method will return the final SQL string.
+   *
+   * @throws Exception
    */
   private function parseConditions(array $conditions, string $concat = 'AND', array $options = []): string
   {
     // normalize options
-    $options = array_merge(
-      [
-        'keysAreLikelyTableRef' => false,
-      ],
-      $options
-    );
+    $options = array_merge(['keysAreLikelyTableRef' => false], $options);
 
     $parsedConditions = [];
 
-    foreach ($conditions as $field => $val) {
+    foreach ($conditions as $field => $value) {
       if ('_or' === strtolower($field)) {
-        $subC = $this->parseConditions($val, 'OR');
+        $subC = $this->parseConditions($value, 'OR');
         $parsedConditions[] = $subC;
       } elseif ('_and' === strtolower($field)) {
-        $subC = $this->parseConditions($val, 'AND');
+        $subC = $this->parseConditions($value, 'AND');
         $parsedConditions[] = $subC;
-      } elseif ('_like' === strtolower($field) && is_array($val) && 2 === count($val)) {
-        $parsedConditions[] = 'lower(' . $this->escapeField($val[0]) . ') like ' . "lower('" . $val[1] . "')";
+      } elseif ('_like' === strtolower($field) && is_array($value) && 2 === count($value)) {
+        $parsedConditions[] = 'lower(' . $this->escapeField($value[0]) . ') like ' . "lower('" . $value[1] . "')";
       } else {
         $containsOperator = preg_match(
           '/(?P<field>[A-z ]*)\W* (?P<operator>\>=|\<=|!=|is not|is|=|\>|\<)/i',
           $field,
           $matches
         );
-        $parsedValue = '';
 
-        if (is_array($val)) {
-          foreach ($val as $k => $v) {
-            $val[$k] = $this->sanitizeValue($v);
+        if (is_array($value)) {
+          foreach ($value as $k => $v) {
+            $value[$k] = $this->sanitizeValue($v);
           }
 
-          $parsedValue = '(' . implode(',', $val) . ')';
+          $parsedValue = '(' . implode(',', $value) . ')';
         } else {
-          if (preg_match('/^\w+$/', $val) || preg_match('/^\w+\.\w+$/', $val)) {
+          if (is_string($value) && (preg_match('/^\w+$/', $value) || preg_match('/^\w+\.\w+$/', $value))) {
             if (true === $options['keysAreLikelyTableRef']) {
-              $parsedValue = $this->escapeField($val);
+              $parsedValue = $this->escapeField($value);
             } else {
-              $parsedValue = $this->sanitizeValue($val);
+              $parsedValue = $this->sanitizeValue($value);
             }
           } else {
-            $parsedValue = $this->sanitizeValue($val);
+            $parsedValue = $this->sanitizeValue($value);
           }
         }
 
         if (!$containsOperator) {
-          if (is_array($val)) {
+          if (is_array($value)) {
             $parsedConditions[] = $this->escapeField($field) . " IN $parsedValue";
           } else {
             $parsedConditions[] = $this->escapeField($field) . " = $parsedValue";
           }
         } else {
           if (empty($matches['field']) || empty($matches['operator'])) {
-            throw new \Exception('Could not parse query');
+            throw new Exception('Could not parse query');
           }
 
           $matches['field'] = trim($matches['field']);

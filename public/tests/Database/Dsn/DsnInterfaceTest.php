@@ -10,23 +10,23 @@ use PHPUnit\Framework\TestCase;
 
 class DsnInterfaceTest extends TestCase
 {
-    public function testHandle(): void
-    {
-        $dsn = new SqliteDsn(':memory:');
+  public function testHandle(): void
+  {
+    $dsn = new SqliteDsn(':memory:');
 
-        $this->assertInstanceOf(SqliteDsn::class, $dsn);
-        $this->assertEquals('sqlite::memory:', $dsn->dsn());
+    $this->assertInstanceOf(SqliteDsn::class, $dsn);
+    $this->assertEquals('sqlite::memory:', $dsn->dsn());
 
-        $mock = $this
-            ->getMockBuilder(MyDsnTrait::class)
-            ->setConstructorArgs([
-                'database' => 'database_name',
-                'user'     => 'foo',
-                'password' => 'bar',
-                'host'     => 'database_host',
-                'port'     => 7632,
-            ])
-            ->getMockForTrait();
-        $this->assertSame('mysql:host=database_host;port=7632;dbname=database_name;user=foo;password=bar;charset=utf8', $mock->dsn());
-    }
+    $mock = $this
+      ->getMockBuilder(MyDsnTrait::class)
+      ->setConstructorArgs([
+        'database' => 'database_name',
+        'user'     => 'foo',
+        'password' => 'bar',
+        'host'     => 'database_host',
+        'port'     => 7632,
+      ])
+      ->getMockForTrait();
+    $this->assertSame('mysql:host=database_host;port=7632;dbname=database_name;user=foo;password=bar;charset=utf8', $mock->dsn());
+  }
 }
