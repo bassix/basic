@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace BasicApp;
@@ -48,7 +47,7 @@ class BasicApp
         $this->logger->info('###> Instantiating the main application <###');
 
         $this->container['config'] = $this->config = $config ?? $this->configure();
-        $this->container['request'] = $this->request = new Request();
+        $this->container['request'] = $this->request = Request::createFromGlobals();
         $this->container['host'] = $this->host = new Host();
 
         $this->container['database'] = $this->database = new Database(
