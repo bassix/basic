@@ -3,36 +3,17 @@ declare(strict_types=1);
 
 namespace BasicApp\Http;
 
-class Response
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+class Response extends SymfonyResponse
 {
-    private int $statusCode;
-    private Header $headers;
-    private Body $body;
-
-    public function __construct(string|Body $body = null, int $statusCode = StatusCode::HTTP_OK, Header $headers = null)
+    public function body(): string
     {
-        $this->statusCode = $statusCode;
-        $this->headers = $headers ?? new Header();
-
-        if ($body instanceof Body) {
-            $this->body = $body;
-        } else {
-            $this->body = new Body($body);
-        }
+        return $this->content;
     }
 
-    public function body(string|Body $body = null): string
-    {
-        if ($body instanceof Body) {
-            $this->body = $body;
-        } elseif (null !== $body) {
-            $this->body->content($body);
-        }
-
-        return $this->body->content();
-    }
-
-    public function header(): Header
+    public function header(): ResponseHeaderBag
     {
         return $this->headers;
     }
