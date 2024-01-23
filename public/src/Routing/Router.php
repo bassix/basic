@@ -26,7 +26,7 @@ class Router
   /**
    * @var Route[]
    */
-  private $routes = [];
+  private array $routes = [];
 
   public function __construct(string $config = null, Container $container = null, LoggerInterface $logger = null)
   {
@@ -43,13 +43,13 @@ class Router
     }
 
     if (null !== $config && file_exists($config)) {
-      $this->loadRoutes($config);
+      $this->configure($config);
     } else {
       $this->logger->warning("Routing config file \"{$config}\" not found!");
     }
   }
 
-  public function loadRoutes(string $routingConfig): void
+  public function configure(string $routingConfig): void
   {
     $routes = [];
 
@@ -65,14 +65,12 @@ class Router
 
   public function handle(Request $request, string $basePath = '/'): Response
   {
-    // Parse current url
-    $parsedUrl = parse_url($request->uri());
-    $path = '' !== $parsedUrl['path'] ? '/' . $parsedUrl['path'] : '/';
+    $path = $request->getPathInfo();
 
     $this->logger->info("Route \"{$path}\" requested to handle");
 
     foreach ($this->routes as $route) {
-      // Check path match..
+      // Check path match...
       if (!preg_match('#' . $this->getRequestQuery($route, $basePath) . '#', $path, $matches)) {
         continue;
       }
@@ -92,18 +90,19 @@ class Router
         }
       }
 
+      $this->container['page'] = $matches[0] ?? 'index';
+
+      $this->logger->info("Corresponding method \"{$route->method}\" route \"{$route->route}\" class \"{$route->control}\" found");
+
       /*
       if (is_callable($route->class)) {
           call_user_func_array($route->class, $matches);
       }
-      */
-
-      $this->container['page'] = $page = isset($matches[0]) && !empty($matches[0]) ? $matches[0] : 'index';
-
-      $this->logger->info("Corresponding method \"{$route->method}\" route \"{$route->route}\" class \"{$route->control}\" found");
 
       //return call_user_func($route->class);
       //return (new $route->class($this->container))($matches[0]);
+      */
+
       return call_user_func_array(new $route->control($this->container), $matches);
     }
 
@@ -112,19 +111,14 @@ class Router
 
   public function getRequestQuery(Route $route, string $basePath): string
   {
-    $query = $route->route;
+    $queryPath = $route->route;
 
     // Add base path to matching string
     if ('' !== $basePath && '/' !== $basePath) {
-      $query = '(' . $basePath . ')' . $query;
+      $queryPath = '(' . $basePath . ')' . $queryPath;
     }
 
-    // Add 'find string start' automatically
-    $query = '^' . $query;
-
-    // Add 'find string end' automatically
-    $query = $query . '$';
-
-    return $query;
+    // Add 'find string start and end' automatically
+    return '^' . $queryPath . '$';
   }
 }

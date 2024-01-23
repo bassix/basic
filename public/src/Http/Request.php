@@ -3,35 +3,37 @@ declare(strict_types=1);
 
 namespace BasicApp\Http;
 
-class Request
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+
+class Request extends SymfonyRequest
 {
-  public function uri(): string
+  public function cookie(string $key, mixed $default = null): string|int|float|bool|null
   {
-    return ltrim($_SERVER['REQUEST_URI'], '/');
+    return $this->cookies->get($key, $default);
   }
 
   public function method(): string
   {
-    return strtolower($_SERVER['REQUEST_METHOD']) ?? 'get';
+    return $this->getMethod();
   }
 
-  public function request(string $key, $value = null): string | null
+  public function post(string $key, mixed $default = null): string|int|float|bool|null
   {
-    return $_REQUEST[$key] ?? $value;
+    return $this->request->get($key, $default);
   }
 
-  public function get(string $key, $value = null): string | null
+  public function query(string $key, mixed $default = null): string|int|float|bool|null
   {
-    return $_GET[$key] ?? $value;
+    return $this->query->get($key, $default);
   }
 
-  public function post(string $key, $value = null): string | null
+  public function server(string $key, mixed $default = null): string|int|float|bool|null
   {
-    return $_POST[$key] ?? $value;
+    return $this->server->get($key, $default);
   }
 
-  public function cookie(string $key, $value = null): string | null
+  public function uri(): string
   {
-    return $_COOKIE[$key] ?? $value;
+    return $this->getUri();
   }
 }

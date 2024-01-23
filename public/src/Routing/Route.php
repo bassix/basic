@@ -19,8 +19,8 @@ class Route
 
   public function __construct(string $method = self::METHOD_GET, string $route = '/', string $control = DefaultController::class)
   {
-    $this->method = $method;
     $this->route = $route;
+    $this->method = $method;
     $this->control = $control;
   }
 }
