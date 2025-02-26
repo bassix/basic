@@ -13,8 +13,12 @@
 !/mariadb/backup/.gitkeep
 /mariadb/data/*
 !/mariadb/data/.gitkeep
-/mariadb/fixtures/*
-!/mariadb/fixtures/.gitkeep
+
+## PostgreSQL
+/postgresql/backup/*
+!/postgresql/backup/.gitkeep
+/postgresql/data/*
+!/postgresql/data/.gitkeep
 
 ## Redis
 /redis/data/*
@@ -29,22 +33,6 @@
 !/log/mariadb/.gitkeep
 /log/php/*
 !/log/php/.gitkeep
-
-## Page application
-/web/.config/config.php
-/web/app/*
-!/web/app/.gitkeep
-/web/.cache/*
-!/web/.cache/.htaccess
-/web/.data/*
-!/web/.data/.htaccess
-/web/.log/*
-!/web/.log/.htaccess
-
-## Composer
-composer.phar
-/web/vendor/*
-!/web/vendor/.htaccess
 
 ## PHP tools
 .*.cache

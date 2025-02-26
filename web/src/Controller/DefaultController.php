@@ -22,6 +22,10 @@ final class DefaultController extends AbstractController
     //dd($template);
     //dd($template->render("page/{$page}.html.tpl"));
 
+    if (!file_exists($this->template->getTemplatePath("page/{$this->page}.html.tpl"))) {
+      throw new FileNotFoundException("Template file not found: page/{$this->page}.html.tpl");
+    }
+
     return new Response(
       $this->template->render("page/{$this->page}.html.tpl"),
       StatusCode::HTTP_OK

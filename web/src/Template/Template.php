@@ -81,6 +81,11 @@ class Template
     $this->logger->info('The cache cleared successful');
   }
 
+  public function getTemplatePath(string $file): string
+  {
+    return $this->templateDir . '/' . $file;
+  }
+
   public function render(string $file, array $data = []): string
   {
     $this->logger->info("Starting to render template file \"$file\"");

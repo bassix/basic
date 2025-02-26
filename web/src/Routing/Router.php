@@ -26,7 +26,7 @@ class Router
   /**
    * @var Route[]
    */
-  private $routes = [];
+  private array $routes = [];
 
   public function __construct(string $config = null, Container $container = null, LoggerInterface $logger = null)
   {

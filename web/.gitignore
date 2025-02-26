@@ -1,0 +1,17 @@
+## Composer
+composer.phar
+/vendor/*
+!/vendor/.htaccess
+
+## Dynamic Folder
+/var/*
+!/var/.htaccess
+/var/cache/*
+!/var/cache/.htaccess
+/var/data/*
+!/var/data/.htaccess
+/var/log/*
+!/var/log/.htaccess
+
+### Main application configuration
+/config/config.php

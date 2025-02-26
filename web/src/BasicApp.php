@@ -19,8 +19,8 @@ use Psr\Log\LoggerInterface;
 class BasicApp
 {
   public const NAME = 'basic';
-  public const CONFIG_FILE_PATH = '.config/config.php';
-  public const ROUTING_FILE_PATH = '.config/routes.php';
+  public const CONFIG_FILE_PATH = 'config/config.php';
+  public const ROUTING_FILE_PATH = 'config/routes.php';
 
   public Container $container;
   private Config $config;
@@ -40,7 +40,7 @@ class BasicApp
     if (null === $logger) {
       $logLevel = Logger::INFO;
       $this->container['logger'] = $this->logger = new Logger(self::NAME);
-      $this->logger->pushHandler(new StreamHandler($this->root . '/.log/' . self::NAME . '.log', $logLevel));
+      $this->logger->pushHandler(new StreamHandler($this->root . '/var/log/' . self::NAME . '.log', $logLevel));
     } else {
       $this->container['logger'] = $this->logger = $logger;
     }
@@ -58,7 +58,7 @@ class BasicApp
 
     $this->container['template'] = $this->template = new Template(
       $this->root . '/template',
-      $this->root . '/.var/cache',
+      $this->root . '/var/cache',
       $config['dev'] ?? true,
       $this->logger
     );
