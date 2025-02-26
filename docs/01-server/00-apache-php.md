@@ -167,7 +167,7 @@ Enter current configuration:
 <VirtualHost *:80>
     ServerName bassix-basic.lan
     ServerAdmin webmaster@bassix-basic.lan
-    DocumentRoot /var/www/bassix-basic/public
+    DocumentRoot /var/www/bassix-basic/web
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>

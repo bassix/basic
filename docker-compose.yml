@@ -1,0 +1,111 @@
+services:
+  memcached:
+    image: memcached
+    container_name: memcached
+    hostname: memcached
+    environment:
+      - MEMCACHED_MEMORY_LIMIT=128
+    networks:
+      - internal
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    volumes:
+      - ./redis/data:/data
+    networks:
+      - internal
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    hostname: mariadb
+    restart: unless-stopped
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--transaction-isolation=READ-COMMITTED',
+      '--log-bin=binlog',
+      '--binlog-format=ROW',
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-nopassword}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-basic}"
+      MYSQL_USER: "${MYSQL_USER:-basic}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-nopassword}"
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+      - ./log:/var/log/mysql
+      - ./mariadb/fixtures:/docker-entrypoint-initdb.d:ro,delegated
+    networks:
+      - internal
+
+  mariadb-backup:
+    image: dsteinkopf/backup-all-mysql:latest
+    container_name: mariadb-backup
+    hostname: mariadb-backup
+    restart: unless-stopped
+    environment:
+      BACKUP_INTERVAL: 86400
+      BACKUP_FIRSTDELAY: 4000
+      MYSQL_CONNECTION_PARAMS: "--user=${MYSQL_PASSWORD:-nopassword} --host=mariadb --password=${MYSQL_PASSWORD:-nopassword}"
+    depends_on:
+      - mariadb
+    volumes:
+      - ./mariadb/backup:/var/dbdumps
+    networks:
+      - internal
+
+#  postgres:
+#    image: postgres
+#    container_name: postgres
+#    hostname: postgres
+#    restart: unless-stopped
+#    environment:
+#      LANG: "de_DE.utf8"
+#      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=de-DE"
+#      POSTGRES_USER: "${POSTGRES_USER:-basic}"
+#      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-nopassword}"
+#      POSTGRES_DB: "${POSTGRES_DB:-nopassword}"
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#    volumes:
+#      - ./postgresql/data:/var/lib/postgresql/data
+#      - ./postgresql/fixtures:/docker-entrypoint-initdb.d:ro,delegated
+#    networks:
+#      - internal
+
+  web:
+    image: php:8.3-apache
+    container_name: web
+    hostname: web
+    restart: unless-stopped
+    environment:
+      PHP_SESSION_SAVE_PATH: "${PHP_SESSION_HOST:-memcached:11211}"
+      PHP_SESSION_NAME: "${PHP_SESSION_NAME:-BASICSESSID}"
+      BASIC_APP_ENV: "${BASIC_APP_ENV:-prod}"
+    ports:
+      - "8090:80"
+    volumes:
+      - ./config/apache2/sites-enabled:/etc/apache2/sites-enabled/
+      - ./web:/var/www/html/
+      - ./log:/var/log/apache2/
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - memcached
+      - redis
+      - mariadb
+      #- postgres
+    networks:
+      - internal
+      - external
+
+networks:
+  internal:
+  external:
+    driver: bridge

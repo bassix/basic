@@ -8,9 +8,9 @@ This project is based on following structure:
 
 * `/`: Inside the root folder there are many helper scripts to make the handling of relevant task much easier
     * `./env.sh`: Creates a `.env` file with application and database relevant settings.
-    * `./docker-compose.sh`: Starts a full environment with **Docker** and **Docker Compose**.
-    * `./adminer.sh`: Downloads the latest version of **[Adminer](https://www.adminer.org/)** into the public directory.
-* `/public`: The location of the main page application and the root of **Composer**
+    * `./docker compose.sh`: Starts a full environment with **Docker** and **Docker Compose**.
+    * `./adminer.sh`: Downloads the latest version of **[Adminer](https://www.adminer.org/)** into the web directory.
+* `/web`: The location of the main page application and the root of **Composer**
 * **[`/docs`](docs/readme.md)**: A collection of documents with further information about work as a web developer and the environments
 * `/docker`: All relevant configurations for the **Docker** and **Docker Compose** environment
 
@@ -62,7 +62,7 @@ This application is developed to be agnostic to the environment running on. For 
 
 1. [**PHP** built in web server](#php-builtin-server)
 2. [**Apache2** web server with **PHP** module](#apache2-with-php)
-3. [**Docker** and **Docker Compose** environment](#docker-and-docker-compose)
+3. [**Docker** and **Docker Compose** environment](#docker-and-docker compose)
 
 ### Configuration
 
@@ -78,18 +78,63 @@ Before the application can be served it should be configured:
 
 **Note:** the environment has default parameters, and it can be started without any configuration.
 
+### Docker
+
+The easiest way to start the application in its very basic form is to use **Docker**:
+
+```shell
+docker run -d -p 8090:80 --name basic -v "$PWD"/web:/var/www/html php:apache
+```
+
+Access the application:
+
+* The **basic** web page: [http://localhost:8090](http://localhost:8090)
+
+### Docker and Docker Compose
+
+To start the application with services like database and administration tools etc. the **Docker Compose** is used: 
+
+```shell
+docker compose up -d --build --force-recreate
+```
+
+Access the application:
+
+* The **basic** web page: [http://localhost/](http://localhost/)
+* The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
+
+Build and start the development environment with all containers incl. **Adminer** and **PHPMyAdmin**:
+
+```shell
+docker compose -p basic -f docker compose.yml -f docker compose.dev.yml up -d --build --force-recreate
+```
+
+Check if all containers are running correctly:
+
+```shell
+docker compose -p basic ps
+```
+
+Access the application:
+
+* The **basic** web page: [http://localhost:8090](http://localhost:8090)
+* The **Adminer**:
+    * Internal: [http://localhost:8080/adminer.php](http://localhost:8080/adminer.php)
+    * Dedicated app: [http://localhost:8091](http://localhost:8091)
+* The **PHPMyAdmin**: [http://localhost:8092](http://localhost:8092)
+
 ### PHP
 
 For development purpose the easiest way to serve the website is to use the PHP integrated web server:
 
 ```shell
-php -S 127.0.0.1:8000 -t public
+php -S 127.0.0.1:8090 -t web
 ```
 
 Alternative, run the development server in the background and write the output to a log file:
 
 ```shell
-nohup php -S 127.0.0.1:8000 -t public > phpd.log 2>&1 &
+nohup php -S 127.0.0.1:8090 -t web > phpd.log 2>&1 &
 ```
 
 Show the last 100 rows and follow the log file:
@@ -100,8 +145,8 @@ tail -fn 100 phpd.log
 
 Enter the application:
 
-* The **basic** web page: [http://localhost:8000](http://localhost:8000)
-* The **Adminer**: [http://localhost:8000/adminer.php](http://localhost:8000/adminer.php)
+* The **basic** web page: [http://localhost:8090](http://localhost:8090)
+* The **Adminer**: [http://localhost:8090/adminer.php](http://localhost:8090/adminer.php)
 
 ### Apache2 with PHP
 
@@ -116,39 +161,6 @@ Enter the application:
 
 * The **basic** web page: [http://localhost/](http://localhost/)
 * The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
-
-### Docker and Docker Compose
-
-Build and start the small and simple environment:
-
-```shell
-docker-compose up -d
-```
-
-Access the application:
-
-* The **basic** web page: [http://localhost/](http://localhost/)
-* The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
-
-Build and start the development environment with all containers incl. **Adminer** and **PHPMyAdmin**:
-
-```shell
-docker-compose -p basic -f docker-compose.yml -f docker-compose.dev.yml up -d --build --force-recreate
-```
-
-Check if all containers are running correctly:
-
-```shell
-docker-compose -p basic ps
-```
-
-Access the application:
-
-* The **basic** web page: [http://localhost:8080](http://localhost:8080)
-* The **Adminer**:
-  * Internal: [http://localhost:8080/adminer.php](http://localhost:8080/adminer.php)
-  * Dedicated app: [http://localhost:8081](http://localhost:8081)
-* The **PHPMyAdmin**: [http://localhost:8082](http://localhost:8082)
 
 ## Development
 

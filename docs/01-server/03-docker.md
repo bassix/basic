@@ -209,3 +209,17 @@ Test the installation:
 ```shell
 docker-compose --version
 ```
+
+### Docker Compose Commands
+
+**Docker Compose** should now be installed. To verify:
+
+```shell
+docker-compose --version
+```
+
+Run the following command to start a environment:
+
+```shell
+docker-compose up -d --build --force-recreate
+```

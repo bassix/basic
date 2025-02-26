@@ -4,6 +4,6 @@
 . bin/_base.sh
 . bin/_colors.sh
 
-cd public
+cd web
 composer --no-progress --optimize-autoloader ----classmap-authoritative --prefer-dist --ignore-platform-reqs --verbose "$@"
 cd ..

@@ -9,21 +9,21 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Validate composer.json and composer.lock
-        working-directory: ./public
+        working-directory: ./web
         run: composer validate
 
       - name: Install dependencies
-        working-directory: ./public
+        working-directory: ./web
         run: composer --no-progress --optimize-autoloader --classmap-authoritative --prefer-dist --ignore-platform-reqs --verbose install
 
       - name: Run PHP coding standards fixer
-        working-directory: ./public
+        working-directory: ./web
         run: php ./vendor/bin/php-cs-fixer check -n
 
       - name: Run PHPStan static analysis
-        working-directory: ./public
+        working-directory: ./web
         run: php ./vendor/bin/phpstan analyze src tests
 
       - name: Run PHPUnit tests
-        working-directory: ./public
+        working-directory: ./web
         run: php ./vendor/bin/phpunit tests

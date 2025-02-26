@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Include bash base scripts
-. bin/_base.sh
+. bin/.base.sh
 . bin/_colors.sh
 
 adminer_install()
 {
-  wget https://www.adminer.org/latest-de.php -O public/adminer.php
+  wget https://www.adminer.org/latest-de.php -O web/adminer.php
 }
 
-if [[ -f "public/adminer.php" ]]
+if [[ -f "web/adminer.php" ]]
 then
     echo "${underline}${green}Adminer already exists!${reset}"
 

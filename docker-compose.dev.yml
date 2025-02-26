@@ -1,0 +1,34 @@
+services:
+  adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    restart: unless-stopped
+    ports:
+      - "8091:8080"
+    depends_on:
+      - mariadb
+    networks:
+      - internal
+      - external
+
+  phpmyadmin:
+    image: arm64v8/phpmyadmin
+    container_name: phpmyadmin
+    hostname: phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-nopassword}"
+    ports:
+      - "8092:80"
+    depends_on:
+      - mariadb
+    networks:
+      - internal
+      - external
+
+networks:
+  internal:
+  external:
+    driver: bridge

@@ -1,3 +1,6 @@
+## Environment
+.env
+
 ## PHPStorm
 /.idea/
 
@@ -5,28 +8,46 @@
 /.vscode/
 *.code-workspace
 
+## MariaDB
+/mariadb/backup/*
+!/mariadb/backup/.gitkeep
+/mariadb/data/*
+!/mariadb/data/.gitkeep
+/mariadb/fixtures/*
+!/mariadb/fixtures/.gitkeep
+
+## Redis
+/redis/data/*
+!/redis/data/.gitkeep
+
+## Log files
+/log/*
+!/log/.gitkeep
+/log/apache2/*
+!/log/apache2/.gitkeep
+/log/mariadb/*
+!/log/mariadb/.gitkeep
+/log/php/*
+!/log/php/.gitkeep
+
 ## Page application
-/public/.config/config.php
-/public/.log/*
-!/public/.log/.htaccess
-/public/.var/*
-!/public/.var/.htaccess
-/public/.var/cache/*
-!/public/.var/cache/.gitkeep
-/public/app/*
-!/public/app/.gitkeep
+/web/.config/config.php
+/web/app/*
+!/web/app/.gitkeep
+/web/.cache/*
+!/web/.cache/.htaccess
+/web/.data/*
+!/web/.data/.htaccess
+/web/.log/*
+!/web/.log/.htaccess
 
 ## Composer
 composer.phar
-/public/vendor/*
-!/public/vendor/.htaccess
+/web/vendor/*
+!/web/vendor/.htaccess
 
 ## PHP tools
 .*.cache
 
 ## Database Admin
 adminer.php
-
-## Backups and Fixtures
-/backup/*
-!/backup/.gitkeep

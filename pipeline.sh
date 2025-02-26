@@ -4,7 +4,7 @@
 . bin/_base.sh
 . bin/_colors.sh
 
-cd public
+cd web
 
 echo -e "${underline}${green}» Running pipeline...${reset}"
 echo ""
