@@ -10,7 +10,7 @@ declare(strict_types=1);
 $config = new PhpCsFixer\Config();
 $config
   ->setRiskyAllowed(true)
-  ->setIndent('  ')
+  ->setIndent('    ')
   ->setRules([
     '@PSR2' => true,
     // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.

@@ -1,0 +1,9 @@
+services:
+  memcached:
+    image: memcached
+    container_name: '${APP_NAME}_memcached'
+    hostname: memcached
+    environment:
+      MEMCACHED_MEMORY_LIMIT: 128
+    networks:
+      - internal

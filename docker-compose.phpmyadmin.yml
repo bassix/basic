@@ -1,0 +1,14 @@
+services:
+  phpmyadmin:
+    #image: phpmyadmin/phpmyadmin
+    image: arm64v8/phpmyadmin
+    container_name: '${APP_NAME}_phpmyadmin'
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-nopassword}"
+    ports:
+      - '${PHPMYADMIN_PORT:-8092}:80'
+    networks:
+        - internal
+        - external

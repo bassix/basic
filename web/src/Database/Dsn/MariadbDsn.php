@@ -5,5 +5,5 @@ namespace BasicApp\Database\Dsn;
 
 class MariadbDsn implements DsnInterface
 {
-  use MyDsnTrait;
+    use MyDsnTrait;
 }

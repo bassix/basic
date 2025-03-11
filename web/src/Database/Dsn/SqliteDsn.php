@@ -5,16 +5,16 @@ namespace BasicApp\Database\Dsn;
 
 class SqliteDsn implements DsnInterface
 {
-  protected string $type = 'sqlite';
-  protected string $file;
+    protected string $type = 'sqlite';
+    protected string $file;
 
-  public function __construct(string $file)
-  {
-    $this->file = $file;
-  }
+    public function __construct(string $file)
+    {
+        $this->file = $file;
+    }
 
-  public function dsn(): string
-  {
-    return "{$this->type}:{$this->file}";
-  }
+    public function dsn(): string
+    {
+        return "{$this->type}:{$this->file}";
+    }
 }

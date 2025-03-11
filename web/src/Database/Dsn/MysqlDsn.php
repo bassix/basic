@@ -5,5 +5,5 @@ namespace BasicApp\Database\Dsn;
 
 class MysqlDsn implements DsnInterface
 {
-  use MyDsnTrait;
+    use MyDsnTrait;
 }

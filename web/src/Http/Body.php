@@ -5,19 +5,19 @@ namespace BasicApp\Http;
 
 class Body
 {
-  private string $content = '';
+    private string $content = '';
 
-  public function __construct(string $content = null)
-  {
-    $this->content = $content ?? '';
-  }
-
-  public function content(string $content = null): string
-  {
-    if (null !== $content) {
-      $this->content = $content;
+    public function __construct(string $content = null)
+    {
+        $this->content = $content ?? '';
     }
 
-    return $this->content;
-  }
+    public function content(string $content = null): string
+    {
+        if (null !== $content) {
+            $this->content = $content;
+        }
+
+        return $this->content;
+    }
 }

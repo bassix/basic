@@ -8,7 +8,7 @@ The main work on infrastructure level is done on the command line. To make the w
 
 Resource: https://getantibody.github.io/
 
-## Oh My ZSH!4
+## Oh My ZSH!
 
 The **[Z-Shell (zsh)](https://www.zsh.org/)** is a Unix console that can be used both as an interactive login console and as a powerful command line interpreter for console scripts. The zsh is often seen as an extended Bourne console which combines many improvements and features of bash, ksh and tcsh.
 

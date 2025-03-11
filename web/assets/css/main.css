@@ -1,42 +1,42 @@
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-ExtraLight.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-ExtraLight.woff2) format("woff2");
     font-weight: 200
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-Light.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-Light.woff2) format("woff2");
     font-weight: 300
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-Regular.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-Regular.woff2) format("woff2");
     font-weight: 400
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-Medium.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-Medium.woff2) format("woff2");
     font-weight: 500
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-SemiBold.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-SemiBold.woff2) format("woff2");
     font-weight: 600
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-Bold.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-Bold.woff2) format("woff2");
     font-weight: 700
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(/font/Manrope-ExtraBold.woff2) format("woff2");
+    src: url(/assets/fonts/Manrope-ExtraBold.woff2) format("woff2");
     font-weight: 800
 }
 
