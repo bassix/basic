@@ -72,7 +72,7 @@ Before the application can be served it should be configured:
 
     **Note:** use the `./env.sh` helper script.
 
-2. `app/.config/config.php`: The environment configuration, is based on `app/.config/config.dist.php`.
+2. `app/config/config.php`: The environment configuration, is based on `app/config/config.dist.php`.
 
     **Note:** use the `./config.sh` helper script.
 
@@ -92,22 +92,24 @@ Access the application:
 
 ### Docker and Docker Compose
 
-To start the application with services like database and administration tools etc. the **Docker Compose** is used: 
+To start the application with services like *MariaDB*, *Adminer* and *PHPMyAdmin*  the **Docker Compose** is used: 
 
 ```shell
-docker compose up -d --build --force-recreate
+# Start only the basic web application
+docker compose -p basic -f docker-compose.yml up -d --build --force-recreate
+# Start the basic web application with MariaDB
+docker compose -p basic -f docker-compose.yml -f docker-compose.mariadb.yml up -d --build --force-recreate
+# Start the full environment with MariaDB, Adminer and PHPMyAdmin
+docker compose -p basic -f docker-compose.yml -f docker-compose.mariadb.yml -f docker-compose.adminer.yml -f docker-compose.phpmyadmin.yml up -d --build --force-recreate
 ```
 
 Access the application:
 
-* The **basic** web page: [http://localhost/](http://localhost/)
-* The **Adminer**: [http://localhost/adminer.php](http://localhost/adminer.php)
+* The **basic** web page: [http://localhost:8090](http://localhost:8090)
+* The **Adminer**: [http://localhost:8091](http://localhost:8091)
+* The **PHPMyAdmin**: [http://localhost:8092](http://localhost:8092)
 
-Build and start the development environment with all containers incl. **Adminer** and **PHPMyAdmin**:
-
-```shell
-docker compose -p basic -f docker compose.yml -f docker compose.dev.yml up -d --build --force-recreate
-```
+#### Docker Compose Commands
 
 Check if all containers are running correctly:
 
@@ -115,13 +117,17 @@ Check if all containers are running correctly:
 docker compose -p basic ps
 ```
 
-Access the application:
+To follow the logs of the **Docker** stack:
 
-* The **basic** web page: [http://localhost:8090](http://localhost:8090)
-* The **Adminer**:
-    * Internal: [http://localhost:8080/adminer.php](http://localhost:8080/adminer.php)
-    * Dedicated app: [http://localhost:8091](http://localhost:8091)
-* The **PHPMyAdmin**: [http://localhost:8092](http://localhost:8092)
+```shell
+docker compose -p basic logs -f
+```
+
+To stop the **Docker** stack and remove all containers:
+
+```shell
+docker compose -p basic -f docker-compose.yml -f docker-compose.mariadb.yml down --rmi all --remove-orphans
+```
 
 ### PHP
 

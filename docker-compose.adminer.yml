@@ -1,0 +1,11 @@
+services:
+  adminer:
+    image: adminer
+    container_name: '${APP_NAME}_adminer'
+    hostname: adminer
+    restart: unless-stopped
+    ports:
+      - '${ADMINER_PORT:-8091}:8080'
+    networks:
+      - internal
+      - external

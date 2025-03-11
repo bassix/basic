@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Include bash base
+# Include bash base scripts
 . bin/_base.sh
-
-# Include bash colors
 . bin/_colors.sh
 
 if test -f ".env"
@@ -30,14 +28,13 @@ fi
 echo "${green}The environment slug \"${slug}\" will be used.${reset}"
 
 # Fix the slug if wrong given
-#slug=${slug// /-}
-slug=$(echo "$slug" | tr ' ' '-')
-#slug=${slug,,}
+slug=${slug// /-}
+#slug=${slug,,} MacOS bash 3.2 fail!
 slug=$(echo "$slug" | tr '[:upper:]' '[:lower:]')
+
 # Create a session prefix from slug
-#spre=${slug//[^[:alpha:]]/}
-spre=$(echo "$slug" | tr -cd '[:alpha:]')
-#spre=${spre^^}
+spre=${slug//[^[:alpha:]]/}
+#spre=${spre^^} MacOS bash 3.2 fail!
 spre=$(echo "$spre" | tr '[:lower:]' '[:upper:]')
 
 # Get the domain
@@ -60,10 +57,19 @@ then
 fi
 echo "${green}The environment is running in \"${environment}\" mode.${reset}"
 
+if [[ "$environment" == "prod" ]]
+then
+    docker_compose_environment_files="docker-compose.yml"
+else
+    docker_compose_environment_files="docker-compose.yml:docker-compose.db-admin.yml:docker-compose.dev.yml"
+fi
+
 # Read the latest application version from git tags
-git_tag_latest=$(git rev-list --tags --max-count=1)
-if [ -n "$git_tag_latest" ]; then
-    application_version=$(git describe --tags "$git_tag_latest")
+git_tag_latest=`git rev-list --tags --max-count=1`
+
+if [[ "$git_tag_latest" != "" ]]
+then
+    application_version=`git describe --tags ${git_tag_latest}`
 else
     application_version="0.0.0"
 fi
@@ -73,42 +79,55 @@ random_string ()
     cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
 }
 
-mysql_root_password=$(random_string 16)
-mysql_user="${slug}"
-mysql_password=$(random_string 16)
-mysql_database="${slug//-/_}"
-
-postgres_user="${slug}"
-postgres_password=$(random_string 16)
-postgres_database="${slug//-/_}"
+db_port="3306"
+db_user="${slug}"
+db_password=$(random_string 16)
+db_database="${slug//-/_}"
 
 {
-    # Add host specific settings...
+    echo "## Docker Compose file configuration";
+    echo COMPOSE_DIR=.;
+    echo COMPOSE_PROJECT_NAME=basic;
+    echo COMPOSE_FILE=${docker_compose_environment_files};
+    echo "";
+
+    echo "## Host specific settings";
     echo HOST_UID=`id -u`;
     echo HOST_GID=`id -g`;
-    # Environment slug and domain...
-    echo ENV_SLUG="${slug}";
-    echo ENV_DOMAIN="${domain}";
-    # Add Mysql specific settings...
-    echo MYSQL_HOST=mariadb;
-    echo MYSQL_ROOT_PASSWORD=${mysql_root_password};
-    echo MYSQL_USER=${mysql_user};
-    echo MYSQL_PASSWORD=${mysql_password}
-    echo MYSQL_DATABASE=${mysql_database};
-    # Add Postgres specific settings...
-    ewho POSTGRES_HOST=postgres;
-    echo POSTGRES_USER=${postgres_user};
-    echo POSTGRES_PASSWORD=${postgres_password};
-    echo POSTGRES_DB=${postgres_database};
-    # Add PHP specific settings...
+    echo "";
+
+    echo "## Application ports";
+    echo APP_PORT=8090;
+    echo ADMINER_PORT=8091;
+    echo PHPMYADMIN_PORT=8092;
+    echo "";
+
+    echo "## Database specific settings (Sqlite, MariaDB etc.)";
+    echo DB=mariadb;
+    echo DB_HOST=db;
+    echo DB_PORT=${db_port};
+    echo DB_ROOT_PASSWORD=$(random_string 32);
+    echo DB_NAME=${db_database};
+    echo DB_USER=${db_user};
+    echo DB_PASSWORD=${db_password};
+    echo "DB_DSN=mysql://${db_user}:${db_password}@${db_database}:${db_port}/${db_database}";
+    echo "";
+
+    echo "## PHP specific settings";
     echo OPCACHE_VALIDATE_TIMESTAMPS=1;
     echo PHP_SESSION_SAVE_PATH=memcached:11211;
-    echo PHP_SESSION_NAME="${spre}SESSIONID";
-    # Add app specific settings and secrets...
+    echo PHP_SESSION_NAME="${spre}_SESSION_ID";
+    echo "";
+
+    echo "## Environment slug and domain";
+    echo APP_NAME="${slug}";
+    echo APP_DOMAIN="${domain}";
+    echo "";
+
+    echo "## Application specific settings and secrets";
     echo APP_VERSION=${application_version};
-    echo BASIC_APP_ENV=${environment};
-    echo BASIC_APP_SECRET=$(random_string);
-    echo "BASIC_MARIADB_URL=mysql://${mysql_user}:${mysql_password}@mysql:3306/${mysql_database}"
-    echo "BASIC_POSTGRES_URL=postgres://${postgres_user}:${postgres_password}@postgres:5432/${postgres_database}"
-    echo BASIC_JWT_PASSPHRASE=$(random_string);
+    echo APP_ENV=${environment};
+    echo APP_SECRET=$(random_string);
+    echo APP_JWT_PASSPHRASE=$(random_string);
+    echo APP_SLACK_TOKEN=${slack_token};
 } > .env;
