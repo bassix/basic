@@ -5,8 +5,8 @@ namespace BasicApp\Http;
 
 class Host
 {
-  public function name(): string
-  {
-    return gethostname();
-  }
+    public function name(): string
+    {
+        return gethostname();
+    }
 }

@@ -5,5 +5,5 @@ namespace BasicApp\Database\Dsn;
 
 interface DsnInterface
 {
-  public function dsn(): string;
+    public function dsn(): string;
 }

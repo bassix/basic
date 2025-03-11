@@ -9,29 +9,29 @@ use BasicApp\Model\PageModel;
 
 class PageService
 {
-  private Database $database;
+    private Database $database;
 
-  public function __construct(Database $database)
-  {
-    $this->database = $database;
-  }
-
-  /**
-   * @return PageModel[]
-   */
-  public function readAll(): array
-  {
-    $pages = [];
-
-    $page = new PageModel();
-    $page->setTitel('TEST');
-
-    $pagesData = $this->database->rows('SELECT * FROM `page` LIMIT 10');
-
-    foreach ($pagesData as $pageData) {
-      $pages[] = ObjectHelper::cast($pageData, PageModel::class);
+    public function __construct(Database $database)
+    {
+        $this->database = $database;
     }
 
-    return $pages;
-  }
+    /**
+     * @return PageModel[]
+     */
+    public function readAll(): array
+    {
+        $pages = [];
+
+        $page = new PageModel();
+        $page->setTitel('TEST');
+
+        $pagesData = $this->database->rows('SELECT * FROM `page` LIMIT 10');
+
+        foreach ($pagesData as $pageData) {
+            $pages[] = ObjectHelper::cast($pageData, PageModel::class);
+        }
+
+        return $pages;
+    }
 }

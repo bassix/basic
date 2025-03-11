@@ -6,5 +6,5 @@ namespace BasicApp;
 
 class Config
 {
-  public Database\Dsn\DsnInterface $dsn;
+    public Database\Dsn\DsnInterface $dsn;
 }

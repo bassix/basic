@@ -12,21 +12,21 @@ use Psr\Log\NullLogger;
 
 abstract class AbstractController
 {
-  public Container $container;
-  protected Request $request;
-  protected string $page;
-  protected Database $database;
-  protected Template $template;
-  protected LoggerInterface|NullLogger $logger;
+    public Container $container;
+    protected Request $request;
+    protected string $page;
+    protected Database $database;
+    protected Template $template;
+    protected LoggerInterface|NullLogger $logger;
 
-  public function __construct(Container $container, LoggerInterface $logger = null)
-  {
-    $this->logger = $logger ?? new NullLogger();
-    $this->container = $container;
-    $this->request = $this->container['request'];
-    $this->page = $this->container['page'];
-    $this->template = $this->container['template'];
-    $this->database = $this->container['database'];
-    $this->logger->info('####> Controller instantiated <####');
-  }
+    public function __construct(Container $container, LoggerInterface $logger = null)
+    {
+        $this->logger = $logger ?? new NullLogger();
+        $this->container = $container;
+        $this->request = $this->container['request'];
+        $this->page = $this->container['page'];
+        $this->template = $this->container['template'];
+        $this->database = $this->container['database'];
+        $this->logger->info('####> Controller instantiated <####');
+    }
 }

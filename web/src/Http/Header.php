@@ -5,25 +5,25 @@ namespace BasicApp\Http;
 
 class Header
 {
-  private array $headers = [];
+    private array $headers = [];
 
-  public function set(string $key, string $value): self
-  {
-    $this->headers[$key] = $value;
+    public function set(string $key, string $value): self
+    {
+        $this->headers[$key] = $value;
 
-    return $this;
-  }
+        return $this;
+    }
 
-  public function get(string $key): string
-  {
-    return $this->headers[$key];
-  }
+    public function get(string $key): string
+    {
+        return $this->headers[$key];
+    }
 
-  /**
-   * @return string[]
-   */
-  public function all(): array
-  {
-    return $this->headers;
-  }
+    /**
+     * @return string[]
+     */
+    public function all(): array
+    {
+        return $this->headers;
+    }
 }
