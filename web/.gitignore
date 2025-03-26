@@ -21,5 +21,8 @@ composer.phar
 /var/log/*
 !/var/log/.htaccess
 
+## Adminer
+/adminer.*
+
 ### Main application configuration
 /config/config.php
