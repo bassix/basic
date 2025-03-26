@@ -107,8 +107,8 @@ db_database="${slug//-/_}"
     echo "";
 
     echo "## Database specific settings (Sqlite, MariaDB etc.)";
-    echo DB=mariadb;
-    echo DB_HOST=db;
+    echo DB=mysql;
+    echo DB_HOST=mariadb;
     echo DB_PORT=${db_port};
     echo DB_ROOT_PASSWORD=$(random_string 32);
     echo DB_NAME=${db_database};
