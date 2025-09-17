@@ -12,3 +12,4 @@ use BasicApp\Routing\Route;
 //$routes[] = new Route(Route::METHOD_GET, '/bullet-points', BulletPointsController::class);
 $routes[] = new Route(Route::METHOD_GET, '/pages', PagesController::class);
 $routes[] = new Route(Route::METHOD_GET, '/([a-z0-9\-]*)', DefaultController::class);
+$routes[] = new Route(Route::METHOD_GET, '/', DefaultController::class);

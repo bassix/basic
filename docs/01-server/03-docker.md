@@ -81,8 +81,8 @@ newgrp docker
 Resources:
 
 * https://docs.docker.com/engine/install/ubuntu/
-* https://support.netfoundry.io/hc/en-us/articles/360057865692-Installing-Docker-and-docker-compose-for-Ubuntu-20-04
-* http://csmojo.com/posts/mx-linux-setting-up-docker-and-docker-compose.html
+* https://support.netfoundry.io/hc/en-us/articles/360057865692-Installing-Docker-and-docker compose-for-Ubuntu-20-04
+* http://csmojo.com/posts/mx-linux-setting-up-docker-and-docker compose.html
 * https://docs.docker.com/engine/install/debian/
 * https://docs.docker.com/install/linux/linux-postinstall/
 
@@ -179,7 +179,7 @@ Resources:
 On newer distributions the installation can be very easy because **Docker Compose** is already integrated:
 
 ```shell
-sudo apt install docker-compose
+sudo apt install docker compose
 ```
 
 ### Docker Compose install for older distributions
@@ -189,7 +189,7 @@ Alternation this is under Debian packages - though this may be a few versions be
 Run this command to download the current stable release of **Docker Compose**:
 
 ```shell
-sudo curl -L "https://github.com/docker/compose/releases/download/2.6.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/2.6.0/docker compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker compose
 ```
 
 _**Note:** check the version first to get the latest: [https://github.com/docker/compose/releases/](https://github.com/docker/compose/releases/)
@@ -201,13 +201,13 @@ curl -s https://api.github.com/repos/docker/compose/releases/latest | grep brows
 Apply executable permissions to the binary:
 
 ```shell
-sudo chmod +x /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker compose
 ```
 
 Test the installation:
 
 ```shell
-docker-compose --version
+docker compose --version
 ```
 
 ### Docker Compose Commands
@@ -215,11 +215,11 @@ docker-compose --version
 **Docker Compose** should now be installed. To verify:
 
 ```shell
-docker-compose --version
+docker compose --version
 ```
 
 Run the following command to start a environment:
 
 ```shell
-docker-compose up -d --build --force-recreate
+docker compose up -d --build --force-recreate
 ```

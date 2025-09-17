@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BasicApp\Routing;
 
 use BasicApp\Controller\NotFoundController;
+use BasicApp\Exception\FileNotFoundException;
 use BasicApp\Http\Request;
 use BasicApp\Http\Response;
 use Pimple\Container;
@@ -63,14 +64,17 @@ class Router
     $this->routes = $routes;
   }
 
-  public function handle(Request $request, string $basePath = '/'): Response
+    /**
+     * @throws FileNotFoundException
+     */
+    public function handle(Request $request, string $basePath = '/'): Response
   {
     $path = $request->getPathInfo();
 
     $this->logger->info("Route \"{$path}\" requested to handle");
 
     foreach ($this->routes as $route) {
-      // Check path match...
+      // Check path match to route with related controller...
       if (!preg_match('#' . $this->getRequestQuery($route, $basePath) . '#', $path, $matches)) {
         continue;
       }

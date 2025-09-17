@@ -1,7 +1,5 @@
 FROM php:8.3-apache
 
-LABEL Author="Adam Ibrom" Description="A docker image to run basic application with Apache-2.4 and PHP-8.3"
-
 RUN a2enmod rewrite
 
 RUN apt-get update && apt-get install -y git unzip zip

@@ -17,9 +17,9 @@ use Psr\Log\LoggerInterface;
 
 class BasicApp
 {
-    public const NAME = 'basic';
-    public const CONFIG_FILE_PATH = 'config/config.php';
-    public const ROUTING_FILE_PATH = 'config/routes.php';
+    public const string NAME = 'basic';
+    public const string CONFIG_FILE_PATH = 'config/config.php';
+    public const string ROUTING_FILE_PATH = 'config/routes.php';
 
     public Container $container;
     private Config $config;
@@ -168,7 +168,7 @@ class BasicApp
             include $this->root . '/' . self::CONFIG_FILE_PATH;
             $this->logger->info('Configuration found and loaded');
         } else {
-            $this->logger->info('No configuration file "config.php" found, please create it first!');
+            $this->logger->warning('No configuration file "config.php" found, please create it first!');
         }
 
         return $config;

@@ -1,0 +1,12 @@
+services:
+  web:
+    environment:
+      BASIC_APP_ENV: "${APP_ENV:-dev}"
+    ports:
+      - "8090:80"
+    volumes:
+      - ./web:/var/www/html/
+      - ./log/apache2:/var/log/apache2/
+    networks:
+      - internal
+      - external

@@ -5,6 +5,9 @@
 . bin/_colors.sh
 . bin/_env.sh
 
+sudo apt update
+sudo make-ssl-cert generate-default-snakeoil -y
+
 # Generate a SSL certificate
 # Special feature: we sign the certificate ourselves and it is generated without a passphrase!
 # Attention! DO NOT use this script on a production environment! This is only a helper for local development environment!

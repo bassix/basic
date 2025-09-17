@@ -1,0 +1,227 @@
+#!/bin/bash
+
+# Source: https://github.com/lukemorales/ubuntu-dev-setup/blob/master/startup.sh
+
+echo "Welcome! Let's start setting up your system. It could take more than 10 minutes, be patient"
+
+echo ""
+echo "Updating the package list"
+echo ""
+
+sudo -- sh -c 'apt update; apt upgrade -y; apt full-upgrade -y; apt autoremove -y; apt autoclean -y'
+
+echo ""
+echo "Installing the latest firmware updates"
+echo ""
+
+sudo apt install -y fwupd
+sudo fwupdmgr refresh
+sudo fwupdmgr update
+
+echo ""
+echo "Installing basic tools like build-essential, libssl-dev"
+echo ""
+
+sudo apt install -y software-properties-common build-essential libssl-dev libffi-dev
+
+echo ""
+echo "Installing networking tools"
+echo ""
+
+sudo apt install -y net-tools openssh-server openssh-client
+
+echo ""
+echo "Installing basic tools like curl, wget, net-tools"
+echo ""
+
+sudo apt install -y curl wget net-tools dnsutils
+
+echo ""
+echo "Installing basic tools like bashtop, htop, tree, vim, nano"
+echo ""
+
+sudo apt install -y bashtop htop tree vim nano
+
+echo ""
+echo "Installing basic tools like zip, unzip"
+echo ""
+
+sudo apt install -y zip unzip
+
+echo ""
+echo "Installing neofetch"
+echo ""
+
+sudo apt install -y neofetch
+
+echo ""
+echo "Installing tool to handle clipboard via CLI"
+echo ""
+
+sudo apt install -y xclip
+
+echo ""
+echo "Installing latest git"
+echo ""
+
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update && sudo apt install -y git git-flow
+
+echo ""
+echo "Installing python3-pip"
+echo ""
+
+sudo apt install -y python3 python3-pip python3-dev
+
+echo ""
+echo "Installing zsh and oh-my-zsh with Powerlevel10k theme"
+echo ""
+
+git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+cd ..
+rm -rf fonts
+
+sudo apt install -y zsh fonts-powerline texlive-fonts-extra
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/voronkovich/symfony-complete.plugin.zsh ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/symfony-complete
+git clone https://github.com/jerguslejko/zsh-symfony-completion.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/symfony-console
+
+echo ""
+echo "Installing the Symfony CLI to the global scope:"
+echo ""
+
+curl -sS https://get.symfony.com/cli/installer | bash
+sudo mv ~/.symfony5/bin/symfony /usr/local/bin/symfony
+
+echo ""
+echo "Installing PHP and its extensions"
+echo ""
+
+sudo apt install -y \
+    php \
+    php-bcmath \
+    php-cli \
+    php-common \
+    php-curl \
+    php-db \
+    php-gd \
+    php-imagick \
+    php-intl \
+    php-json \
+    php-ldap \
+    php-mbstring \
+    php-memcached \
+    php-mongodb \
+    php-monolog \
+    php-mysql \
+    php-pdo \
+    php-pgsql \
+    php-redis \
+    php-soap \
+    php-tidy \
+    php-uploadprogress \
+    php-xml \
+    php-xmlrpc \
+    php-yaml \
+    php-zip
+
+echo ""
+echo "Installing ImageMagick CLI tools"
+echo ""
+
+sudo apt install -y imagemagick
+
+echo ""
+echo "Installing Nginx"
+echo ""
+
+sudo apt install -y nginx
+
+echo ""
+echo "Installing MariaDB"
+echo ""
+
+sudo apt install -y mariadb-server mariadb-client
+
+echo ""
+echo "Installing Redis"
+echo ""
+
+sudo apt install -y redis-server
+
+echo ""
+echo "Installing Node.js"
+echo ""
+
+sudo apt install -y nodejs npm
+
+echo ""
+echo "Installing OpenJDK and Oracle Java"
+echo ""
+
+sudo apt install -y default-jdk default-jre
+
+echo ""
+echo "Installing Docker and Docker Composer"
+echo ""
+
+sudo apt update
+sudo apt install -y ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker.io docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker $USER
+
+echo ""
+echo "Installing VS Code"
+echo ""
+
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo apt update
+sudo apt install code
+
+echo ""
+echo "Installing Vivaldi"
+echo ""
+
+wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
+sudo add-apt-repository -y 'deb https://repo.vivaldi.com/archive/deb/ stable main'
+sudo apt update
+sudo apt install -y vivaldi-stable
+
+echo ""
+echo "Installing Chrome"
+echo ""
+
+wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo add-apt-repository -y 'deb https://dl.google.com/linux/chrome/deb/ stable main'
+sudo apt update
+sudo apt install -y google-chrome-stable
+
+echo ""
+echo "Installing VLC"
+echo ""
+
+sudo apt install -y vlc
+sudo apt install -y vlc-plugin-access-extra libbluray-bdj libdvdcss2
+
+echo ""
+echo "Installing OBS Studio"
+echo ""
+
+sudo apt install -y ffmpeg && sudo snap install obs-studio

@@ -68,92 +68,90 @@ _**Note:** This commands can be used to create database and user with privilegs 
 
 ## Usage examples
 
-1. Drop tables it exits:
+Drop tables it exits:
 
-    ```sql
-    SELECT t.id,tt.title AS todo_title,t.title,t.description,t.created_at,t.updated_at
-    FROM todo AS t
-    LEFT JOIN todo_type AS tt ON t.type_id=tt.id
-    ```
+```sql
+SELECT t.id,tt.title AS todo_title,t.title,t.description,t.created_at,t.updated_at
+FROM todo AS t
+LEFT JOIN todo_type AS tt ON t.type_id=tt.id
+```
 
-1. Create for example a `todo` table:
+Create for example a `todo` table:
 
-    ```sql
-    CREATE TABLE IF NOT EXISTS `todo` (
-        `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `type_id` BIGINT(20) UNSIGNED NOT NULL,
-        `title` VARCHAR(64) NOT NULL,
-        `description` VARCHAR(255) DEFAULT '',
-        `completed` BOOLEAN,
-        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY(id),
-        KEY `fk_todo_type` (`type_id`),
-        CONSTRAINT `fk_todo_type` FOREIGN KEY (`type_id`) REFERENCES `todo_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=INNODB;
-    CREATE TABLE IF NOT EXISTS `todo_type` (
-        `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `name` VARCHAR(64) NOT NULL,
-        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY(id)
-    ) ENGINE=INNODB;
-    ```
+```sql
+CREATE TABLE IF NOT EXISTS `todo` (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `type_id` BIGINT(20) UNSIGNED NOT NULL,
+    `title` VARCHAR(64) NOT NULL,
+    `description` VARCHAR(255) DEFAULT '',
+    `completed` BOOLEAN,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(id),
+    KEY `fk_todo_type` (`type_id`),
+    CONSTRAINT `fk_todo_type` FOREIGN KEY (`type_id`) REFERENCES `todo_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB;
+CREATE TABLE IF NOT EXISTS `todo_type` (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(64) NOT NULL,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(id)
+) ENGINE=INNODB;
+```
 
-1. Select all todo with type:
+Select all todo with type:
 
-    ```sql
-    SELECT t.id, tt.name AS `type`, t.title, t.description, t.created_at, t.updated_at
-    FROM todo AS t
-    LEFT JOIN todo_type AS tt ON t.type_id=tt.id
-    ```
+```sql
+SELECT t.id, tt.name AS `type`, t.title, t.description, t.created_at, t.updated_at
+FROM todo AS t
+LEFT JOIN todo_type AS tt ON t.type_id=tt.id
+```
 
 ## Delete Database and User
 
-How to delete or remove a user account and a related database:
+Connect as `root` to the database server: 
 
-1. Connect as `root` to the database server: 
+```shell
+sudo mariadb
+```
 
-    ```shell
-    sudo mariadb
-    ```
+Alternative as our "superuser" `admin`:
 
-    Alternative as our "superuser" `admin`:
+```shell
+mysql -u admin -p
+```
 
-    ```shell
-    mysql -u admin -p
-    ```
+In the first step check the existence of the user:
 
-1. In the first step check the existence of the user:
+```sql
+SELECT User,Host FROM mysql.user;
+```
 
-    ```sql
-    SELECT User,Host FROM mysql.user;
-    ```
+List grants for a user:
 
-1. List grants for a user:
+```sql
+SHOW GRANTS FOR 'basic'@'localhost';
+```
 
-    ```sql
-    SHOW GRANTS FOR 'basic'@'localhost';
-    ```
+Revoke all grants for a user:
 
-1. Revoke all grants for a user:
+```sql
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'basic'@'localhost';
+FLUSH PRIVILEGES;
+```
 
-    ```sql
-    REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'basic'@'localhost';
-    FLUSH PRIVILEGES;
-    ```
+Drop the user from the user table:
 
-1. Drop the user from the user table:
+```sql
+DROP USER 'basic'@'localhost';
+```
 
-    ```sql
-    DROP USER 'basic'@'localhost';
-    ```
+Delete the database:
 
-1. Delete the database:
-
-    ```sql
-    DROP DATABASE basic;
-    ```
+```sql
+DROP DATABASE basic;
+```
 
 ## Troubleshooting
 

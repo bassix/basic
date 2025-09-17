@@ -24,7 +24,7 @@ function testMemory() {
 function testDisk() {
     $start = microtime(true);
     $filename = 'testfile.tmp';
-    $data = str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', 1000);
+    $data = str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', 10000);
     file_put_contents($filename, $data);
     $content = file_get_contents($filename);
     unlink($filename);
@@ -35,7 +35,7 @@ $cpuTime = testCPU();
 $memoryTime = testMemory();
 $diskTime = testDisk();
 
-echo "Server Benchmark Results:\n";
-echo "CPU Time: " . round($cpuTime, 5) . " seconds\n";
-echo "Memory Allocation Time: " . round($memoryTime, 5) . " seconds\n";
-echo "Disk Read/Write Time: " . round($diskTime, 5) . " seconds\n";
+echo "Server Benchmark Results:<br>\n";
+echo "CPU Time: " . round($cpuTime, 5) . " seconds<br>\n";
+echo "Memory Allocation Time: " . round($memoryTime, 5) . " seconds<br>\n";
+echo "Disk Read/Write Time: " . round($diskTime, 5) . " seconds<br>\n";
